@@ -1,0 +1,13 @@
+{
+  "label": "exemple",
+  "from": "Prenom Nom <prenom.nom@example.org>",
+  "username": "prenom.nom@example.org",
+  "password": "MOT-DE-PASSE-D-APPLICATION",
+  "smtp_server": "smtp.example.org",
+  "smtp_port": 465,
+  "smtp_security": "ssl",
+  "imap_server": "imap.example.org",
+  "imap_port": 993,
+  "imap_security": "ssl",
+  "sent_folder": "Sent"
+}

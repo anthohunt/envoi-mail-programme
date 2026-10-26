@@ -1,0 +1,9 @@
+accounts/*.json
+!accounts/exemple.json
+queue/
+sent/
+failed/
+attachments/
+logs/
+*.bak*
+__pycache__/
