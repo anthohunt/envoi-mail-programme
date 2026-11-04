@@ -1,40 +1,42 @@
+**English** · [Français](README.fr.md)
+
 # envoi-mail-programme
 
-Mettre un mail en file d'attente et le faire partir **à l'heure dite**, depuis un serveur qui reste allumé. Trois petits scripts Python (bibliothèque standard seulement) : pas de service tiers, vos mails partent par le serveur SMTP de votre propre compte.
+Queue an email and have it sent **at the set time**, from a server that stays on. Three small Python scripts (standard library only): no third-party service, your emails go out through the SMTP server of your own account.
 
-## Ce que contient le dépôt
-• `schedule.py` : `add` (mettre en file), `list` (voir ce qui attend), `cancel` (retirer).
-• `send_due.py` : à lancer chaque minute ; envoie les mails dont l'heure est passée, les archive dans `sent/`, réessaie 5 fois puis range dans `failed/`. Dépose aussi une copie dans le dossier « Envoyés » du compte par IMAP si le compte en a un.
-• `check_sent.py` : vérifie par IMAP qu'un mail est bien parti.
-• `accounts/exemple.json` : modèle d'un compte. **Vos vrais comptes (`accounts/*.json`) sont ignorés par git et ne doivent jamais être commités** : ils contiennent un mot de passe d'application.
+## What is in the repository
+- `schedule.py`: `add` (queue), `list` (see what is waiting), `cancel` (remove).
+- `send_due.py`: run it every minute; it sends the emails whose time has passed, archives them in `sent/`, retries 5 times and then moves them to `failed/`. It also drops a copy into the account's Sent folder over IMAP if the account has one.
+- `check_sent.py`: checks over IMAP that an email really went out.
+- `accounts/exemple.json`: an account template. **Your real accounts (`accounts/*.json`) are ignored by git and must never be committed**: they contain an app password.
 
-## Installer
-Prérequis : Python 3.9 ou plus, cron.
+## Install
+Requirements: Python 3.9 or later, cron.
 ```
-git clone <ce dépôt> && cd envoi-mail-programme
-export MAIL_PROGRAMME_DIR=$HOME/.mail-programme     # dossier de travail (file, archives, comptes)
-export MAIL_PROGRAMME_TZ=Europe/Paris               # fuseau des heures saisies (UTC par défaut)
+git clone <this repository> && cd envoi-mail-programme
+export MAIL_PROGRAMME_DIR=$HOME/.mail-programme     # working folder (queue, archives, accounts)
+export MAIL_PROGRAMME_TZ=Europe/Paris               # time zone of the times you enter (UTC by default)
 mkdir -p $MAIL_PROGRAMME_DIR/accounts
 cp accounts/exemple.json $MAIL_PROGRAMME_DIR/accounts/perso.json && chmod 600 $MAIL_PROGRAMME_DIR/accounts/perso.json
-# éditez perso.json : adresse, serveur, port, mot de passe d'application
-crontab -l 2>/dev/null; echo '* * * * * MAIL_PROGRAMME_DIR=$HOME/.mail-programme python3 /chemin/vers/send_due.py >> $HOME/.mail-programme/cron.log 2>&1'
+# edit perso.json: address, server, port, app password
+crontab -l 2>/dev/null; echo '* * * * * MAIL_PROGRAMME_DIR=$HOME/.mail-programme python3 /path/to/send_due.py >> $HOME/.mail-programme/cron.log 2>&1'
 ```
-(ajoutez la ligne avec `crontab -e`).
+(add the line with `crontab -e`).
 
-## Utiliser
+## Usage
 ```
-python3 schedule.py add --account perso --to destinataire@example.org --subject "Bonjour" \
-  --html-file corps.html --attach piece1.pdf,piece2.pdf --at "2027-01-15T08:00"
-python3 schedule.py add --account perso --to destinataire@example.org --subject "Dans une heure" --text "Salut" --in 1h
+python3 schedule.py add --account perso --to recipient@example.org --subject "Hello" \
+  --html-file body.html --attach file1.pdf,file2.pdf --at "2027-01-15T08:00"
+python3 schedule.py add --account perso --to recipient@example.org --subject "In one hour" --text "Hi" --in 1h
 python3 schedule.py list
 python3 schedule.py cancel <id>
-python3 check_sent.py perso "Bonjour"       # combien de mails « Bonjour » dans les Envoyés
+python3 check_sent.py perso "Hello"       # how many "Hello" emails are in Sent
 ```
-`smtp_security` : `ssl` (port 465), `starttls` (587) ou `none` (serveur local de test, sans mot de passe).
+`smtp_security`: `ssl` (port 465), `starttls` (587) or `none` (local test server, no password).
 
-## Sécurité
-• Les mots de passe sont en clair dans `accounts/*.json` (droits 600) : utilisez un mot de passe d'application, pas votre mot de passe principal.
-• `queue/`, `sent/`, `failed/`, `logs/` contiennent de vrais mails : ne les publiez pas (déjà dans `.gitignore`).
+## Security
+- Passwords are stored in clear text in `accounts/*.json` (mode 600): use an app password, not your main password.
+- `queue/`, `sent/`, `failed/`, `logs/` contain real emails: do not publish them (already in `.gitignore`).
 
-## Licences
-Code : Apache 2.0 (`LICENSE`, `NOTICE`). Texte : CC BY 4.0 (`LICENSE-docs`). Aucune dépendance tierce.
+## Licenses
+Code: Apache 2.0 (`LICENSE`, `NOTICE`). Text: CC BY 4.0 (`LICENSE-docs`). No third-party dependency.
