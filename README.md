@@ -1,5 +1,7 @@
 **English** · [Français](README.fr.md)
 
+**Anthony Hunt** · [ingevision.cloud](https://ingevision.cloud/?lang=en) · [LinkedIn](https://www.linkedin.com/in/anthony-hunt-3948a9196) · [GitHub profile](https://github.com/anthohunt)
+
 # envoi-mail-programme
 
 Queue an email and have it sent **at the set time**, from a server that stays on. Three small Python scripts (standard library only): no third-party service, your emails go out through the SMTP server of your own account.

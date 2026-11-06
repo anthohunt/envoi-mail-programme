@@ -1,5 +1,7 @@
 [English](README.md) · **Français**
 
+**Anthony Hunt** · [ingevision.cloud](https://ingevision.cloud/) · [LinkedIn](https://www.linkedin.com/in/anthony-hunt-3948a9196) · [Profil GitHub](https://github.com/anthohunt)
+
 # envoi-mail-programme
 
 Mettre un mail en file d'attente et le faire partir **à l'heure dite**, depuis un serveur qui reste allumé. Trois petits scripts Python (bibliothèque standard seulement) : pas de service tiers, vos mails partent par le serveur SMTP de votre propre compte.
